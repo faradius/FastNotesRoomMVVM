@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">FastNotes</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_button">Add Button</string>
+    <string name="edit_text_note_title">Título</string>
+    <string name="edit_text_note_content">Nota</string>
 </resources>

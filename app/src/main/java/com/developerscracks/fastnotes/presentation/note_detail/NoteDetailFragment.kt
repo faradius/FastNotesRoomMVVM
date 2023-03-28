@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteDetailBinding
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
+import com.developerscracks.fastnotes.presentation.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +27,7 @@ class NoteDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.editTextNoteContent.showKeyboard()
     }
 
     override fun onDestroyView() {
