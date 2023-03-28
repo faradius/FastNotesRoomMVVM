@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteDetailBinding
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NoteDetailFragment : Fragment() {
 
     private var _binding: FragmentNoteDetailBinding? = null
