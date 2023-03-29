@@ -5,16 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentBottomSheetColorSelectorBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class BottomSheetColorSelectorFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentBottomSheetColorSelectorBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var colorSelectorAdapter: ColorSelectorAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +31,11 @@ class BottomSheetColorSelectorFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.rvColor.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = colorSelectorAdapter
+        }
     }
 
     override fun onDestroy() {

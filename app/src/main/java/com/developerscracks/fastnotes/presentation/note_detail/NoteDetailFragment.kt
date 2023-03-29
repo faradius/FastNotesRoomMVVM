@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteDetailBinding
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
@@ -28,6 +29,11 @@ class NoteDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.editTextNoteContent.showKeyboard()
+
+        binding.ivNoteColor.setOnClickListener{
+            val action = NoteDetailFragmentDirections.actionNoteDetailFragmentToBottomSheetColorSelectorFragment()
+            findNavController().navigate(action)
+        }
     }
 
     override fun onDestroyView() {
