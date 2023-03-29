@@ -18,5 +18,15 @@
         android:id="@+id/noteDetailFragment"
         android:name="com.developerscracks.fastnotes.presentation.note_detail.NoteDetailFragment"
         android:label="fragment_note_detail"
-        tools:layout="@layout/fragment_note_detail" />
+        tools:layout="@layout/fragment_note_detail" >
+        <action
+            android:id="@+id/action_noteDetailFragment_to_bottomSheetColorSelectorFragment"
+            app:destination="@id/bottomSheetColorSelectorFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/bottomSheetColorSelectorFragment"
+        android:name="com.developerscracks.fastnotes.presentation.note_detail.BottomSheetColorSelectorFragment"
+        android:label="fragment_bottom_sheet_color_selector"
+        tools:layout="@layout/fragment_bottom_sheet_color_selector" />
 </navigation>
