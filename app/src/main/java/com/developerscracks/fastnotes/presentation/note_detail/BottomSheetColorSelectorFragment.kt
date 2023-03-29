@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentBottomSheetColorSelectorBinding
@@ -21,6 +22,10 @@ class BottomSheetColorSelectorFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var colorSelectorAdapter: ColorSelectorAdapter
 
+    private val viewModel: NoteDetailViewModel by navGraphViewModels(R.id.note_detail_graph){
+        defaultViewModelProviderFactory
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +40,11 @@ class BottomSheetColorSelectorFragment : BottomSheetDialogFragment() {
         binding.rvColor.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = colorSelectorAdapter
+        }
+
+        colorSelectorAdapter.setOnItemClickListener {selectedColor ->
+            viewModel.updateNoteColor(selectedColor)
+            this.dismiss()
         }
     }
 
