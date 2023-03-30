@@ -17,6 +17,8 @@ class NoteListViewModel @Inject constructor(private val noteRepository: NoteRepo
     private var _noteList = MutableStateFlow<List<Note>>(emptyList())
     val noteList: StateFlow<List<Note>> = _noteList
 
+    private var _searchQuery = MutableStateFlow("")
+
     //cuando se cree este viewModel junto con el fragmento llamemos a esta lista de notas
     init {
         getNotes()
@@ -24,7 +26,7 @@ class NoteListViewModel @Inject constructor(private val noteRepository: NoteRepo
 
     fun getNotes(){
         //onEach no esta permitiendo obtener nuesta lista de notas, es propia de las corrutinas flow
-        noteRepository.getNotes().onEach {noteList ->
+        noteRepository.getNotes(_searchQuery.value).onEach {noteList ->
             _noteList.value = noteList
         }.launchIn(viewModelScope) //Le tenemos que definir el alcance o sobre que escope se va ejecutar la corrita
     }

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
+import com.developerscracks.fastnotes.presentation.utils.changeStatusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -55,6 +56,13 @@ class NoteListFragment : Fragment() {
                 noteListAdapter.submitList(noteList)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().window.changeStatusBarColor(R.color.app_bg_color)
+        //Cada vez que regresemos a la lista de de notas queremos que se muestre la lista actualizada con la ultima nota agregada o modificada
+        viewModel.getNotes()
     }
 
     override fun onDestroyView() {

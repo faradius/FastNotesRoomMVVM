@@ -1,6 +1,7 @@
 package com.developerscracks.fastnotes.domain.repository
 
 import com.developerscracks.fastnotes.data.cache.note.NoteDao
+import com.developerscracks.fastnotes.data.cache.note.toNote
 import com.developerscracks.fastnotes.data.cache.note.toNoteEntity
 import com.developerscracks.fastnotes.data.data_source.getNoteList
 import com.developerscracks.fastnotes.domain.model.Note
@@ -19,9 +20,11 @@ class NoteRepository(private val noteDao: NoteDao) {
         e.printStackTrace()
     }
 
-    fun getNotes(): Flow<List<Note>> = flow {
-        val cacheNoteList = getNoteList()
+    fun getNotes(query: String): Flow<List<Note>> = flow {
+
+        val cacheNoteList = noteDao.getNotes(query).map { it.toNote() }
         emit(cacheNoteList)
+
     }.catch { e ->
         //Recorre todos los elementos en donde se ha presentado algun error
         //Esto utilizado para las bases de datos

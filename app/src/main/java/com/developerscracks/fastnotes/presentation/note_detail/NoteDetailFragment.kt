@@ -15,6 +15,7 @@ import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteDetailBinding
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
 import com.developerscracks.fastnotes.presentation.note_list.NoteListViewModel
+import com.developerscracks.fastnotes.presentation.utils.changeStatusBarColor
 import com.developerscracks.fastnotes.presentation.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -60,6 +61,8 @@ class NoteDetailFragment : Fragment() {
                         selectedColor
                     )
                 )
+
+                requireActivity().window.changeStatusBarColor(selectedColor)
 
                 binding.lyBottomTools.setBackgroundColor(
                     ContextCompat.getColor(
