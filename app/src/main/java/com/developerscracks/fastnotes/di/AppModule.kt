@@ -1,6 +1,11 @@
 package com.developerscracks.fastnotes.di
 
+import android.app.Application
+import androidx.room.Room
 import com.developerscracks.fastnotes.R
+import com.developerscracks.fastnotes.data.cache.note.AppDatabase
+import com.developerscracks.fastnotes.data.cache.note.AppDatabase.Companion.DATABASE_NAME
+import com.developerscracks.fastnotes.data.cache.note.NoteDao
 import com.developerscracks.fastnotes.domain.repository.NoteRepository
 import com.developerscracks.fastnotes.presentation.note_detail.ColorSelectorAdapter
 import com.developerscracks.fastnotes.presentation.note_list.NoteListAdapter
@@ -40,5 +45,19 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNoteRepository() = NoteRepository()
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(app: Application): AppDatabase{
+        return Room.databaseBuilder(app, AppDatabase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoteDao(db: AppDatabase): NoteDao{
+        return db.getNoteDao()
+    }
 
 }
