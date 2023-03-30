@@ -44,7 +44,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteRepository() = NoteRepository()
+    fun provideNoteRepository(noteDao: NoteDao) = NoteRepository(noteDao)
 
     @Provides
     @Singleton

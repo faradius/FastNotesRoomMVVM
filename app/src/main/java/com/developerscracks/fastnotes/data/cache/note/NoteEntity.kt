@@ -22,26 +22,26 @@ class NoteEntity(
     val created: Long,
     @ColumnInfo("actualizada")
     val updated: Long
-){
-    fun NoteEntity.toNote(): Note{
-        return Note(
-            id = id,
-            title = title,
-            content = content,
-            color = color,
-            created = created,
-            updated = updated
-        )
-    }
+)
 
-    fun Note.toNoteEntity(): NoteEntity{
-        return NoteEntity(
-            id = id,
-            title = title,
-            content = content,
-            color = color,
-            created = created,
-            updated = updated
-        )
-    }
+fun NoteEntity.toNote(): Note{
+    return Note(
+        id = id,
+        title = title,
+        content = content,
+        color = color,
+        created = created,
+        updated = updated
+    )
+}
+
+fun Note.toNoteEntity(): NoteEntity{
+    return NoteEntity(
+        id = id,
+        title = title,
+        content = content,
+        color = color,
+        created = created,
+        updated = updated
+    )
 }
