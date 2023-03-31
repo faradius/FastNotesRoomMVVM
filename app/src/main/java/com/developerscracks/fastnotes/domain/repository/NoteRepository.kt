@@ -45,4 +45,12 @@ class NoteRepository(private val noteDao: NoteDao) {
     }.catch { e ->
         e.printStackTrace()
     }
+
+    fun deleteNote(noteId: String): Flow<Boolean> = flow {
+        noteDao.deleteNote(noteId)
+
+        emit(true)
+    }.catch { e ->
+        e.printStackTrace()
+    }
 }

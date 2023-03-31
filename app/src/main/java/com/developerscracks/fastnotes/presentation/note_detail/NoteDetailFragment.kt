@@ -57,6 +57,10 @@ class NoteDetailFragment : Fragment() {
             saveNote()
         }
 
+        binding.ivDeleteNote.setOnClickListener{
+            viewModel.deleteNote()
+        }
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.selectedColor.collect { selectedColor ->
                 binding.noteContainer.setBackgroundColor(
