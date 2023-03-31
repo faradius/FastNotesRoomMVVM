@@ -1,5 +1,6 @@
 package com.developerscracks.fastnotes.presentation.note_detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developerscracks.fastnotes.R
@@ -13,7 +14,11 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteDetailViewModel @Inject constructor(private val noteRepository: NoteRepository):ViewModel(){
+class NoteDetailViewModel @Inject constructor(
+    private val noteRepository: NoteRepository,
+    savedStateHandle: SavedStateHandle //Nos permite guardar en memoria los parametros que queramos
+    ):ViewModel(){
+
     private var _selectedColor = MutableStateFlow(R.color.app_bg_color)
     val selectedColor: StateFlow<Int> = _selectedColor
 
@@ -22,6 +27,18 @@ class NoteDetailViewModel @Inject constructor(private val noteRepository: NoteRe
 
     private var _noteHasBeenModified = MutableStateFlow(false)
     val noteHasBeenModified: StateFlow<Boolean> = _noteHasBeenModified
+
+    init {
+        savedStateHandle.get<String>("noteId")?.let { noteId ->
+            getNoteById(noteId)
+        }
+    }
+
+    private fun getNoteById(noteId: String){ //onEach para recibir la nota
+        noteRepository.getNoteById(noteId).onEach {note ->
+            _note.value = note
+        }.launchIn(viewModelScope)
+    }
 
     fun updateNoteColor(newSelectedColor: Int){
         _selectedColor.value = newSelectedColor

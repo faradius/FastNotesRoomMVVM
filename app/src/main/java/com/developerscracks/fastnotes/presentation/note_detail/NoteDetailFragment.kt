@@ -1,12 +1,14 @@
 package com.developerscracks.fastnotes.presentation.note_detail
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,6 +21,8 @@ import com.developerscracks.fastnotes.presentation.utils.changeStatusBarColor
 import com.developerscracks.fastnotes.presentation.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class NoteDetailFragment : Fragment() {
@@ -79,6 +83,31 @@ class NoteDetailFragment : Fragment() {
                 if (noteHasBeenModified){
                     //se utiliza para retroceder en la pila de navegación y volver al destino anterior en la aplicación.
                     findNavController().popBackStack()
+                }
+            }
+        }
+
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.note.collect{
+                it?.let {note ->
+                    binding.editTextNoteTitle.setText(note.title)
+                    binding.editTextNoteContent.append("${note.content} ") //Nos pone nuestro cursor al final de nuestro texto
+                    viewModel.updateNoteColor(note.color)
+                    binding.ivDeleteNote.isVisible = true
+
+                    //Obtenemos la fecha
+                    val updateAt = Date(note.updated)
+                    //le damos formato
+                    val dateFormat: SimpleDateFormat = if (DateUtils.isToday(updateAt.time)){
+                        //hh horas, mm minutos y a si es am o pm
+                        SimpleDateFormat("hh:mm a", Locale.ROOT)
+                    }else{
+                        //MMM las primeras tres letras del mes
+                        SimpleDateFormat("MMM dd", Locale.ROOT)
+                    }
+
+                    binding.tvNoteModified.text = "Editado ${dateFormat.format(updateAt)}"
                 }
             }
         }

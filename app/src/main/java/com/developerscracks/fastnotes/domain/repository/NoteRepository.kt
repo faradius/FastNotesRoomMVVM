@@ -20,6 +20,14 @@ class NoteRepository(private val noteDao: NoteDao) {
         e.printStackTrace()
     }
 
+    fun getNoteById(noteId: String): Flow<Note?> = flow {
+        val note = noteDao.getNoteById(noteId)?.toNote()
+
+        emit(note)
+    }.catch { e ->
+        e.printStackTrace()
+    }
+
     fun getNotes(query: String): Flow<List<Note>> = flow {
 
         val cacheNoteList = noteDao.getNotes(query).map { it.toNote() }
