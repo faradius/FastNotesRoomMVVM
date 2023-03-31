@@ -30,4 +30,9 @@ class NoteListViewModel @Inject constructor(private val noteRepository: NoteRepo
             _noteList.value = noteList
         }.launchIn(viewModelScope) //Le tenemos que definir el alcance o sobre que escope se va ejecutar la corrita
     }
+
+    fun updateQuery(newQuery: String){
+        _searchQuery.value = newQuery
+        getNotes()
+    }
 }

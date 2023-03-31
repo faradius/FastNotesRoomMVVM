@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
 import com.developerscracks.fastnotes.presentation.utils.changeStatusBarColor
+import com.developerscracks.fastnotes.presentation.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -39,6 +41,28 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return if (query != null){
+                    searchDatabase(query)
+                    binding.searchView.hideKeyboard()
+                    true
+                }else{
+                    false
+                }
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                return if (query != null){
+                    searchDatabase(query)
+                    true
+                }else{
+                    false
+                }
+            }
+        })
+
         binding.rvNotes.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = noteListAdapter
@@ -61,6 +85,10 @@ class NoteListFragment : Fragment() {
             val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(noteId)
             findNavController().navigate(action)
         }
+    }
+
+    private fun searchDatabase(query: String) {
+        viewModel.updateQuery(query)
     }
 
     override fun onResume() {
