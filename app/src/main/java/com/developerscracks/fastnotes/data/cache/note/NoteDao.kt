@@ -1,9 +1,6 @@
 package com.developerscracks.fastnotes.data.cache.note
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface NoteDao {
@@ -16,4 +13,7 @@ interface NoteDao {
 
     @Query("SELECT * FROM notes WHERE id = :noteId")
     suspend fun getNoteById(noteId: String): NoteEntity?
+
+    @Update
+    suspend fun updateNote(note: NoteEntity)
 }

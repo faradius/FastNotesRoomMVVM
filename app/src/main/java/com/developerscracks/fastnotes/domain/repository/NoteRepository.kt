@@ -38,4 +38,11 @@ class NoteRepository(private val noteDao: NoteDao) {
         //Esto utilizado para las bases de datos
         e.printStackTrace()
     }
+
+    fun updateNote(note: Note): Flow<Boolean> = flow {
+        noteDao.updateNote(note.toNoteEntity())
+        emit(true)
+    }.catch { e ->
+        e.printStackTrace()
+    }
 }
