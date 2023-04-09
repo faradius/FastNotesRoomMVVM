@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.developerscracks.fastnotes.R
 import com.developerscracks.fastnotes.databinding.FragmentNoteListBinding
 import com.developerscracks.fastnotes.presentation.utils.changeStatusBarColor
@@ -40,6 +43,9 @@ class NoteListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.ivDarkMode.setOnClickListener { viewModel.toggleDarkMode() }
+        binding.ivLayoutList.setOnClickListener { viewModel.toggleLayoutMode() }
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -78,6 +84,28 @@ class NoteListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.noteList.collect{noteList ->
                 noteListAdapter.submitList(noteList)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.darkMode.collect(){isDarkMode ->
+                if (isDarkMode){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.linearLayoutMode.collect(){isLinearLayout ->
+                if (isLinearLayout){
+                    binding.ivLayoutList.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_grid))
+                    binding.rvNotes.layoutManager = LinearLayoutManager(requireContext())
+                }else{
+                    binding.ivLayoutList.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_list))
+                    binding.rvNotes.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                }
             }
         }
 

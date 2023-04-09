@@ -7,6 +7,7 @@ import com.developerscracks.fastnotes.data.cache.note.AppDatabase
 import com.developerscracks.fastnotes.data.cache.note.AppDatabase.Companion.DATABASE_NAME
 import com.developerscracks.fastnotes.data.cache.note.NoteDao
 import com.developerscracks.fastnotes.domain.repository.NoteRepository
+import com.developerscracks.fastnotes.domain.repository.SettingsRepository
 import com.developerscracks.fastnotes.presentation.note_detail.ColorSelectorAdapter
 import com.developerscracks.fastnotes.presentation.note_list.NoteListAdapter
 import dagger.Module
@@ -45,6 +46,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNoteRepository(noteDao: NoteDao) = NoteRepository(noteDao)
+
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(application: Application):SettingsRepository = SettingsRepository(application)
 
     @Provides
     @Singleton

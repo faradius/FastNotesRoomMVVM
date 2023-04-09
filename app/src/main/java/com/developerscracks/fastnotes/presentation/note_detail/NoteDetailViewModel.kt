@@ -68,7 +68,7 @@ class NoteDetailViewModel @Inject constructor(
     private fun saveNewNote(title: String, content: String) {
 
         if (title.isEmpty() && content.isEmpty()){
-            _noteHasBeenModified.value = false
+            _noteHasBeenModified.value = true
             return //Esto es para que ya no siga haciendo las demas lineas de codigo
         }
 
